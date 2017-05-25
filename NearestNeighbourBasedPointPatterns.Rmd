@@ -33,18 +33,17 @@ $$
 \end{aligned}
 $$
 
-,where $n$ is the number of events, and $\bar{d}_{exp}$ expected min distances under complete spacial randomness (CSR).
+,where $n$ is the number of events, and $\bar{d}_{exp}$ expected mean NN distances under complete spacial randomness (CSR).
 
 Nearest Neighbour index:
 
 $$
-\begin{aligned}
-\bar{d}_d = \bar{d}_{obs} - \bar{d}_{exp} && d_r = \bar{d}_{obs} / \bar{d}_{exp}
-\end{aligned}
+NNI = \bar{d}_{obs} / \bar{d}_{exp}
 $$
 
+
 ```{r echo=FALSE}
-tmp<-data.frame(Difference = c("d<0",0,"d>0"),Pattern = c("Clustered", "Random", "Dispersed"), Ratio=c("d<1",1,"d>1"))
+tmp<-data.frame(Pattern = c("Clustered", "Random", "Dispersed"), NNI=c("d<1",1,"d>1"))
 knitr::kable(tmp)
 ```
 
@@ -128,16 +127,15 @@ knitr::kable(tmp,digits = 2)
 ```
 
 
-## Other function based on nearest neighbour distance
+## Other functions based on nearest neighbour distance
 
-There is the G and F function which are both based on the NND.
+There is the G and F function which are both based on the nearest neighbour distance.
 
-```{r echo=FALSE, fig.width=10,fig.height=5}
+```{r echo=FALSE, fig.width=10,fig.height=4}
 runif <- runifpoint(1000, win=c(c(0,100), c(0,100)))
 par(mfrow=c(1,4))
 
 plot(Gmulti(pois, 1:nrow(data.frame(pois)),1:nrow(data.frame(pois))), main="pois")
-#plot(Gmulti(rSSI, 1:nrow(data.frame(rSSI)),1:nrow(data.frame(rSSI))), main="disperse")
 plot(Gmulti(rClust, 1:nrow(data.frame(rClust)),1:nrow(data.frame(rClust))), main="clustered")
 plot(Gmulti(Drugs.ppp, 1:nrow(data.frame(Drugs.ppp)),1:nrow(data.frame(Drugs.ppp))), main="Drugs Example")
 

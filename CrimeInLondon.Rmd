@@ -5,9 +5,44 @@ date: "May 5, 2017"
 output: html_document
 ---
 
-```{r}
+```{r eval=FALSE}
 install.packages(c("sp","plotGoogleMaps","spatstat","raster","maptools","plotrix","rgeos"))
 ```
+
+# What is spatstats
+
+* Implement functionality
+* Hanlde real datasets
+    + Example Ripley redwood data
+    + Ants Data
+* Fit realistic models to data.
+    +  spatial point patterns is conducted almost exclusively using ‘exploratory’ summary statistics such as the K function
+    + fit parametric models to spatial point pattern data
+
+* Creation, manipulation and plotting of point patterns
+    + extracting subsets
+* Exploratory data analysis
+    + the average intensity, 
+    + the K function Ripley (1977) and the 
+    + kernel-smoothed intensity map
+    
+    + empty space function F, 
+    + nearest neighbour distance function G, 
+    + pair correlation function g, 
+    + inhomogeneous K function 
+    + second moment measure, 
+    + Bartlett spectrum, 
+    + cross-K function, 
+    + cross-G function, 
+    + J-function
+    + mark correlation function. 
+
+* Parametric model-fitting:
+    + The point process models to be fitted may be quite general Gibbs/Markov models
+    + A fitted model can be printed, plotted, predicted, updated, and simulated. Capabilities for residual analysis and model diagnostics will be added in version
+1.6.
+    + Models are specified using a formula in the R language
+    + printed, plotted, predicted, updated, and simulated
 
 ```{r setup, include=FALSE}
 library(sp)
@@ -30,6 +65,7 @@ write.csv(data, file="Data/OriginalDataOfFabio.csv")
 data <- read.csv("Data/OriginalDataOfFabio.csv")
 str(data)
 data <- data[!is.na(data$Longitude)&!is.na(data$Latitude),]  
+
 ```
 
 #Point pattern analysis
@@ -37,11 +73,13 @@ data <- data[!is.na(data$Longitude)&!is.na(data$Latitude),]
 A point process is a stochastic process for which we observe its results, or events, only in a specific region, which is the area under study, or simply window. The location of the events is a point pattern (Bivand et al., 2008).
 In R the package for Point Pattern Analysis is spatstat, which works with its own format (i.e. ppp). There are ways to transform a data.frame into a ppp object, however in this case we have a problem. The crime dataset contains lots of duplicated locations. We can check this by first transform data into a SpatialObject and then use the function zerodist to check for duplicated locations:
 
+
 ```{r}
 coordinates(data)=~Longitude+Latitude  
 zero <- zerodist(data)
 class(zero)
 length(unique(zero[,1]))  
+
 ```
 
 #Loading Natural Earth Provinces dataset to define window for Point Pattern Analysis  
@@ -158,7 +196,9 @@ window <- as.owin(GreaterLondonUTM)
 
 #Now we can extract one crime and   
 ```{r}
-Drugs.ppp <- ppp(x=Drugs.UTM@coords[,1],y=Drugs.UTM@coords[,2],window=window)  
+Drugs.ppp <- ppp(x=Drugs.UTM@coords[,1],y=Drugs.UTM@coords[,2],window=window) 
+save(Drugs.ppp, file = "Drugs.ppp")
+
 ```
 
 #Calculate Intensity  
